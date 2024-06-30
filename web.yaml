@@ -28,7 +28,7 @@
         dest: /usr/share/nginx/html
         remote_src: yes
 
-    - name: roboshop configuration
+    - name: copy roboshop configuration
       ansible.builtin.copy:
         src: roboshop.conf
         dest: /etc/nginx/default.d/roboshop.conf      
@@ -36,5 +36,5 @@
     - name: restart nginx
       ansible.builtin.service:
         name: nginx 
-        state: started
+        state: restarted
         enabled: yes
