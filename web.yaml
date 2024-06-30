@@ -8,12 +8,12 @@
         state: present
 
     - name: remove html directory
-      ansbile.builtin.file:
+      ansible.builtin.file:
         path: /usr/share/nginx/html
         state: absent
 
     - name: create html directory
-      ansbile.builtin.file:
+      ansible.builtin.file:
         path: /usr/share/nginx/html
         state: directory
 
