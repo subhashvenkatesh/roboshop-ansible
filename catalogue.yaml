@@ -41,7 +41,7 @@
         dest: /etc/systemd/system/catalogue.service
         
     - name: daemon realod and start
-      ansible.builtin.systemd_services:
+      ansible.builtin.systemd_service:
         daemon_reload: true
 
     - name: copy mongodb repo
