@@ -19,12 +19,12 @@
       ansible.builtin.file:
         path: /app
         state: absent
-        directory: yes
+        
 
     - name: Creating directory
       ansible.builtin.file:
         path: /app
-        directory: yes
+        state: directory
   
 
     - name: Downloading the user application
