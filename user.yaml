@@ -1,4 +1,4 @@
-- name: User configuaration
+- name: User
   hosts: user
   become: yes
   tasks:
@@ -29,8 +29,8 @@
     - name: Downloading the user application
       ansible.builtin.get_url:
         url: https://roboshop-builds.s3.amazonaws.com/user.zip
-        dest: /tmp/user.zip
-    
+        dest: /tmp
+            
     - name: extract user application
       ansible.builtin.unarchive:
         src: /tmp/user.zip
