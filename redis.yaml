@@ -1,5 +1,5 @@
 - name: Install redis components
-  host: redis
+  hosts: redis
   become: yes
   tasks: 
   - name: Install remi release repositories
