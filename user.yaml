@@ -51,12 +51,6 @@
       ansible.builtin.systemd_service:
         daemon_reload: true
 
-    - name: user start service
-      ansible.builtin.service:
-        name: user
-        state: started
-        enabled: yes    
-
     - name: coping mongodb repo
       ansible.builtin.copy:
         src: mongodb.repo
