@@ -1,0 +1,65 @@
+- name: User configuaration
+  hosts: user
+  become: yes
+  tasks:
+    - name: Disable nodejs and enabel nodejs 18
+      ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+
+    - name: Install nodejs
+      ansible.builtin.package:
+        name: nodejs
+        state: present
+
+    - name: create roboshop user
+      ansible.builtin.user:
+        name: roboshop
+
+
+    - name: Recursively remove directory
+      ansible.builtin.file:
+        path: /app
+        state: absent
+
+    - name: Creating directory
+      ansible.builtin.file:
+        path: /app
+        state: present
+
+    - name: Downloading the user application
+      ansible.builtin.get_url:
+        url: https://roboshop-builds.s3.amazonaws.com/user.zip
+        dest: /tmp/user.zip
+    
+    - name: Unzipping user application
+      ansible.builtin.unarchive:
+        src: /tmp/user.zip
+        dest: /app
+        
+    - name: coping user service
+      ansible.builtin.copy:
+        src: user.service
+        dest: /etc/systemd/system/user.service
+    
+    - name: daemon reload
+      ansible.builtin.systemd_service:
+        name: daemon
+        state: present
+
+    - name: user start service
+      ansible.builtin.service:
+        name: user
+        state: started
+        enabled: yes    
+
+    - name: coping mongodb repo
+      ansible.builtin.copy:
+        src: mongodb.repo
+        dest: /etc/yum.repos.d/mongo.repo
+
+    - name: Install mongodb client
+      ansible.builtin.package:
+        name: mongodb-org-shell
+        state: present
+
+    - name: Load date to the user
+      ansible.builtin.command: mongo --host mongodb.erumamadu.online < /app/schema/user.js
