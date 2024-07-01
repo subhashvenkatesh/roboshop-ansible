@@ -8,7 +8,7 @@
       state: present
   
   - name: enable redis
-    ansible.builtin.command: dnf module enable redis:remi-6.2
+    ansible.builtin.command: dnf module enable redis:remi-6.2 -y
 
   - name: Install redis
     ansible.builtin.package:
