@@ -32,9 +32,9 @@
 
     - name: extract payment application
       ansible.builtin.unarchive:
-      src: /tmp/payment.zip
-      dest: /app
-      remote_src: yes
+        rc: /tmp/payment.zip
+        dest: /app
+        remote_src: yes
 
     - name: install pip3
       ansible.builtin.command: pip3.6 install -r requirements.txt
