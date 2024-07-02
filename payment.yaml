@@ -26,8 +26,9 @@
         state: directory
 
     - name: Download payment application
-      ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/payment.zip
-      dest: /tmp
+      ansible.builtin.get_url: 
+        url: https://roboshop-builds.s3.amazonaws.com/payment.zip
+        dest: /tmp
 
     - name: Unzip paymet application
       ansible.builtin.unarchive:
