@@ -29,7 +29,7 @@
         dest: /tmp
 
     - name: Extract shipping application
-      ansible.builin.unarchive:
+      ansible.builtin.unarchive:
         src: shipping.zip
         dest: /app
         remote_src: yes
