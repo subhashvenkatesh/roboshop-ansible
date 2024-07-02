@@ -2,8 +2,14 @@
   hosts: payment
   become: yes
   tasks:
-    - name: Install python
-      ansible.builtin.shell: python36 gcc python3-devel
+    - name: Install python packages
+      ansible.builtin.dnf: 
+        name: "{{item}}"
+        state: present
+      loop:
+        - python36  
+        - gcc
+        - python3-devel
 
     - name: Create roboshop user
       ansible.builtin.user:
@@ -20,9 +26,8 @@
         state: directory
 
     - name: Download payment application
-      ansible.builtin.shell: curl -L -o /tmp/payment.zip https://roboshop-builds.s3.amazonaws.com/payment.zip
-      args: 
-        chdir: /app
+      ansible.builtin.get_url: https://roboshop-builds.s3.amazonaws.com/payment.zip
+      dest: /tmp
 
     - name: Unzip paymet application
       ansible.builtin.unarchive:
@@ -32,6 +37,8 @@
 
     - name: install pip3
       ansible.builtin.command: pip3.6 install -r requirements.txt
+      args:
+        chdir: /app
 
     - name: copy payment service
       ansible.builtin.copy:
