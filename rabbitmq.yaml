@@ -3,10 +3,10 @@
   become: yes
   tasks: 
     - name: Configure yum erlang server
-      ansible.builtin.command: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
+      ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash
 
     - name: Configure yum rabbitmq server
-      ansible.builtin.command: curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
+      ansible.builtin.shell: curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash
 
     - name: Install rabbitmq-server
       ansible.builtin.package:
@@ -20,7 +20,7 @@
         enabled: yes
 
     - name: Create rabbitmq user
-      ansible.builtin.shell: rabbitmqctl add_user roboshop roboshop123
+      ansible.builtin.command: rabbitmqctl add_user roboshop roboshop123
 
     - name: Set permissions
-      ansible.builtin.shell: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
+      ansible.builtin.command: rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"
