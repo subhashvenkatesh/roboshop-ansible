@@ -1,6 +1,8 @@
 - name: shipping
   hosts: shipping
   become: yes
+  vars:
+    mysql_password: RoboShop@1
   tasks:
     - name: Install maven
       ansible.builtin.package:
@@ -23,8 +25,8 @@
 
     - name: Downloading the shipping application
       ansible.builtin.get_url:
-      url: https://roboshop-builds.s3.amazonaws.com/shipping.zip
-      dest: /tmp
+        url: https://roboshop-builds.s3.amazonaws.com/shipping.zip
+        dest: /tmp
 
     - name: Extract shipping application
       ansible.builin.unarchive:
@@ -51,21 +53,25 @@
       ansible.builtin.systemd_service:
         daemon_reload: true
 
-    - name: start and enable shipping
-      ansible.builtin.service:
-        name: shipping
-        state: started
-        enabled: yes
-
     - name: Install mysql
       ansible.builtin.dnf:
         name: mysql
         state: present
 
-    - name: Load Schema
-      ansible.builtin.command: mysql -h mysql.erumamadu.online -uroot -pRoboShop@1 < /app/schema/shipping.sql         
+    - name: check cities schema exists or not
+      ansible.builtin.command:  mysql -h mysql.erumamadu.online -uroot -p{{mysql_password}} -sN -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'cities'"
+      register: schema
+
+    - name: print output
+      ansible.builtin.debug:
+        msg: "schema output: {{schema}}"
+
+    - name: load cities data
+      ansible.builtin.shell: "mysql -h mysql.erumamadu.online -uroot -p{{mysql_password}}  < /app/schema/shipping.sql"
+      when: schema.stdout != "1"         
     
     - name: start and enable shipping
       ansible.builtin.service:
         name: shipping
         state: started
+        enabled: yes
