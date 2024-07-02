@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Install python
-      ansible.builtin.command: python36 gcc python3-devel
+      ansible.builtin.shell: python36 gcc python3-devel
 
     - name: Create roboshop user
       ansible.builtin.user:
