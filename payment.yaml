@@ -32,7 +32,7 @@
 
     - name: extract payment application
       ansible.builtin.unarchive:
-        rc: /tmp/payment.zip
+        src: /tmp/payment.zip
         dest: /app
         remote_src: yes
 
